@@ -84,6 +84,7 @@ word_vectorizer = Tfidf(
     stop_words='english',
     ngram_range=(1, 2),
     max_features=20000)
+
 char_vectorizer = Tfidf(
     sublinear_tf=True,
     strip_accents='unicode',
@@ -91,12 +92,14 @@ char_vectorizer = Tfidf(
     stop_words='english',
     ngram_range=(2, 6),
     max_features=30000)
+
 vectorizer = make_union(
     on_field('comment_text', word_vectorizer),
     on_field('comment_text', char_vectorizer),
     n_jobs=4)
+
 with timer('process train'):
-    train = pd.read_csv('../input/train.csv')
+    train = pd.read_csv('train.csv')
     cv = KFold(n_splits=20, shuffle=True, random_state=42)
     train_ids, valid_ids = next(cv.split(train))
     train, valid = train.iloc[train_ids], train.iloc[valid_ids]
@@ -105,11 +108,13 @@ with timer('process train'):
     X_train = vectorizer.fit_transform(preprocess(train)).astype(np.float32)
     print(f'X_train: {X_train.shape} of {X_train.dtype}')
     del train
+
 with timer('process valid'):
     X_valid = vectorizer.transform(preprocess(valid)).astype(np.float32)
     del valid
+
 with timer('process test'):
-    test = pd.read_csv('../input/test.csv')
+    test = pd.read_csv('test.csv')
     X_test = vectorizer.transform(preprocess(test)).astype(np.float32)
     del test
 
@@ -128,3 +133,4 @@ sub = pd.read_csv('sample_submission.csv')
 sub[class_names] = pred_test_avg.copy()
 # sub.to_csv('auc-valid_{:.6f}.csv'.format(auc_valid), index=False)
 sub.to_csv('submission-mlp-v1.csv', index=False)
+print('save submission to submission-mlp-v1.csv')

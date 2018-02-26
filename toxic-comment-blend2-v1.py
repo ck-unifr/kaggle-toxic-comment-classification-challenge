@@ -12,7 +12,8 @@ zsign = {-1:'negative',  0.: 'neutral', 1:'positive'}
 
 train = pd.read_csv('train.csv')
 test = pd.read_csv('test.csv')
-sub1 = pd.read_csv('submission-blend1-v1.csv')
+# sub1 = pd.read_csv('submission-blend1-v1.csv')
+sub1 = pd.read_csv('submission-blend1-v2.csv')
 
 coly = [c for c in train.columns if c not in ['id','comment_text']]
 y = train[coly]
@@ -31,13 +32,13 @@ nrow = train.shape[0]
 tfidf = feature_extraction.text.TfidfVectorizer(stop_words='english', ngram_range=(1, 2), max_features=800000)
 data = tfidf.fit_transform(df)
 
-# model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
+model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
 # model = ensemble.RandomForestClassifier(n_estimators=100, random_state=42)
-model = xgb.XGBClassifier(max_depth=3, n_estimators=300, learning_rate=0.05)
+# model = xgb.XGBClassifier(max_depth=3, n_estimators=100, learning_rate=0.05)
 
 model.fit(data[:nrow], y)
 
-print(1- model.score(data[:nrow], y))
+print(1 - model.score(data[:nrow], y))
 
 sub2 = model.predict_proba(data[nrow:])
 sub2 = pd.DataFrame([[c[1] for c in sub2[row]] for row in range(len(sub2))]).T

@@ -9,6 +9,10 @@ gru_v2 = pd.read_csv("submission-pooled-gru-v2.csv")
 gru_v3 = pd.read_csv("submission-pooled-gru-v3.csv")
 lr_v1 = pd.read_csv("submission-lr-v1.csv")
 mlp_v1 = pd.read_csv("submission-mlp-v1.csv")
+s9821 = pd.read_csv("sub9821.csv")
+# hight = pd.read_csv('hight_of_blending.csv')
+cnn_lstm_v1 = pd.read_csv('submission_cnn_lstm_v1.csv')
+
 
 
 # gru = pd.read_csv("../input/who09829/submission.csv")
@@ -19,25 +23,31 @@ mlp_v1 = pd.read_csv("submission-mlp-v1.csv")
 # # svm = pd.read_csv("../input/toxic-nbsvm/nbsvm.csv")
 # best = pd.read_csv('../input/toxic-hight-of-blending/hight_of_blending.csv')
 
+# ble = gru_v1.copy()
+# col = gru_v1.columns
+# col = col.tolist()
+# col.remove('id')
+# for i in col:
+#     ble[i] = (4 * gru_v1[i] + 3 * gru_v2[i] + 2 * gru_v3[i] + 1 * lr_v1[i] + 2 * mlp_v1[i]) / 12
+
+label_cols = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 ble = gru_v1.copy()
-col = gru_v1.columns
+#p_res[label_cols] = (2*p_nbsvm[label_cols] + 3*p_lstm[label_cols] + 4*p_eaf[label_cols]) / 9
+ble[label_cols] = (4*gru_v1[label_cols] + 3*gru_v2[label_cols] + 3*gru_v3[label_cols]
+                     + 1*lr_v1[label_cols] + 2*mlp_v1[label_cols] + 1*s9821[label_cols] + 2*cnn_lstm_v1[label_cols]) / 16
+# ble.to_csv('submission-blend1-v1', index=False)
 
-col = col.tolist()
-col.remove('id')
-
-for i in col:
-    ble[i] = (4 * gru_v1[i] + 3 * gru_v2[i] + 2 * gru_v3[i] + 1 * lr_v1[i] + 2 * mlp_v1[i]) / 12
 
 # submission_ave.csv is downloaded from
 # https://www.kaggle.com/the1owl/toxic-simple-blending-toxic-avenger-spin/notebook
 ave = pd.read_csv('submission_ave.csv')
 sub1 = ble[:]
 sub2 = ave[:]
-coly = [c for c in ave.columns if c not in ['id','comment_text']]
+coly = [c for c in ave.columns if c not in ['id', 'comment_text']]
 sub2.columns = [x+'_' if x not in ['id'] else x for x in sub2.columns]
 blend = pd.merge(sub1, sub2, how='left', on='id')
 for c in coly:
     blend[c] = np.sqrt(blend[c] * blend[c+'_'])
     blend[c] = blend[c].clip(0+1e12, 1-1e12)
 blend = blend[sub1.columns]
-blend.to_csv('submission.csv', index=False)
+blend.to_csv('submission-blend1-v2.csv', index=False)
