@@ -107,4 +107,5 @@ submission[["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_ha
 
 
 submission.to_csv('submission-pooled-gru-v1.csv', index=False)
+print('saved submission to submission-pooled-gru-v1.csv')
 

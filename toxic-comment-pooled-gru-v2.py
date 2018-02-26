@@ -23,14 +23,17 @@ import os
 
 os.environ['OMP_NUM_THREADS'] = '4'
 
-EMBEDDING_FILE = 'glove.42b.300d/glove.42B.300d.txt'
+
+classes = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+
+EMBEDDING_FILE = 'glove.42B.300d.txt'
 
 train = pd.read_csv('train.csv')
 test = pd.read_csv('test.csv')
 submission = pd.read_csv('sample_submission.csv')
 
 X_train = train["comment_text"].fillna("fillna").values
-y_train = train[["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]].values
+y_train = train[classes].values
 X_test = test["comment_text"].fillna("fillna").values
 
 max_features = 30000
@@ -43,6 +46,9 @@ X_train = tokenizer.texts_to_sequences(X_train)
 X_test = tokenizer.texts_to_sequences(X_test)
 x_train = sequence.pad_sequences(X_train, maxlen=maxlen)
 x_test = sequence.pad_sequences(X_test, maxlen=maxlen)
+
+print(x_train.shape)
+print(x_train[0])
 
 
 def get_coefs(word, *arr): return word, np.asarray(arr, dtype='float32')
@@ -84,7 +90,7 @@ def get_model():
     avg_pool = GlobalAveragePooling1D()(x)
     max_pool = GlobalMaxPooling1D()(x)
     conc = concatenate([avg_pool, max_pool])
-    outp = Dense(6, activation="sigmoid")(conc)
+    outp = Dense(len(classes), activation="sigmoid")(conc)
 
     model = Model(inputs=inp, outputs=outp)
     model.compile(loss='binary_crossentropy',
@@ -106,5 +112,8 @@ hist = model.fit(X_tra, y_tra, batch_size=batch_size, epochs=epochs, validation_
                  callbacks=[RocAuc], verbose=2)
 
 y_pred = model.predict(x_test, batch_size=1024)
-submission[["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]] = y_pred
+submission[classes] = y_pred
+
 submission.to_csv('submission-pooled-gru-v2.csv', index=False)
+
+print('save submission to submission-pooled-gru-v2.csv')
