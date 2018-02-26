@@ -244,7 +244,7 @@ hist = model.fit(X_tra, y_tra, batch_size=batch_size, epochs=epochs, validation_
                  callbacks=[RocAuc], verbose=2)
 
 y_pred = model.predict(x_test, batch_size=1024)
-submission[["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]] = y_pred
+submission[classes] = y_pred
 submission.to_csv('submission-pooled-gru-v3.csv', index=False)
 
 print('save submission to submission-pooled-gru-v3.csv')

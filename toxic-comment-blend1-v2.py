@@ -6,6 +6,7 @@ import numpy as np
 
 gru_v1 = pd.read_csv("submission-pooled-gru-v1.csv")
 gru_v2 = pd.read_csv("submission-pooled-gru-v2.csv")
+gru_v3 = pd.read_csv("submission-pooled-gru-v3.csv")
 lr_v1 = pd.read_csv("submission-lr-v1.csv")
 mlp_v1 = pd.read_csv("submission-mlp-v1.csv")
 
@@ -25,7 +26,7 @@ col = col.tolist()
 col.remove('id')
 
 for i in col:
-    ble[i] = (4 * gru_v1[i] + 3 * gru_v2[i] + 2 * lr_v1[i] + 2 * mlp_v1[i]) / 11
+    ble[i] = (4 * gru_v1[i] + 3 * gru_v2[i] + 2 * gru_v3[i] + 1 * lr_v1[i] + 2 * mlp_v1[i]) / 12
 
 # submission_ave.csv is downloaded from
 # https://www.kaggle.com/the1owl/toxic-simple-blending-toxic-avenger-spin/notebook

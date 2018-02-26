@@ -31,13 +31,14 @@ nrow = train.shape[0]
 tfidf = feature_extraction.text.TfidfVectorizer(stop_words='english', ngram_range=(1, 2), max_features=800000)
 data = tfidf.fit_transform(df)
 
-model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
+# model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
 # model = ensemble.RandomForestClassifier(n_estimators=100, random_state=42)
-# model = xgb.XGBClassifier(max_depth=3, n_estimators=300, learning_rate=0.05)
-
+model = xgb.XGBClassifier(max_depth=3, n_estimators=300, learning_rate=0.05)
 
 model.fit(data[:nrow], y)
+
 print(1- model.score(data[:nrow], y))
+
 sub2 = model.predict_proba(data[nrow:])
 sub2 = pd.DataFrame([[c[1] for c in sub2[row]] for row in range(len(sub2))]).T
 sub2.columns = coly
@@ -60,5 +61,9 @@ blend = pd.merge(sub1, sub2, how='left', on='id')
 for c in coly:
     blend[c] = np.sqrt(blend[c] * blend[c+'_'])
     blend[c] = blend[c].clip(0+1e12, 1-1e12)
+
 blend = blend[sub1.columns]
-blend.to_csv('submission-blend2-v1.csv', index=False)
+
+blend.to_csv('submission-blend2-gbm-v1.csv', index=False)
+
+print('save submission to submission-blend2-gbm-v1.csv')

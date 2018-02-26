@@ -60,3 +60,5 @@ for class_name in class_names:
 print('Total CV score is {}'.format(np.mean(scores)))
 
 submission.to_csv('submission-lr-v1.csv', index=False)
+
+print('save submission to submission-lr-v1.csv')
