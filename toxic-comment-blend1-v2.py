@@ -9,7 +9,7 @@ gru_v2 = pd.read_csv("submission-pooled-gru-v2.csv")
 gru_v3 = pd.read_csv("submission-pooled-gru-v3.csv")
 lr_v1 = pd.read_csv("submission-lr-v1.csv")
 mlp_v1 = pd.read_csv("submission-mlp-v1.csv")
-s9821 = pd.read_csv("sub9821.csv")
+# s9821 = pd.read_csv("sub9821.csv")
 # hight = pd.read_csv('hight_of_blending.csv')
 cnn_lstm_v1 = pd.read_csv('submission_cnn_lstm_v1.csv')
 
@@ -34,7 +34,7 @@ label_cols = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_
 ble = gru_v1.copy()
 #p_res[label_cols] = (2*p_nbsvm[label_cols] + 3*p_lstm[label_cols] + 4*p_eaf[label_cols]) / 9
 ble[label_cols] = (4*gru_v1[label_cols] + 3*gru_v2[label_cols] + 3*gru_v3[label_cols]
-                     + 1*lr_v1[label_cols] + 2*mlp_v1[label_cols] + 1*s9821[label_cols] + 2*cnn_lstm_v1[label_cols]) / 16
+                     + 1*lr_v1[label_cols] + 2*mlp_v1[label_cols] + 2*cnn_lstm_v1[label_cols]) / 15
 # ble.to_csv('submission-blend1-v1', index=False)
 
 

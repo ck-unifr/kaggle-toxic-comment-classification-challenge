@@ -32,8 +32,8 @@ nrow = train.shape[0]
 tfidf = feature_extraction.text.TfidfVectorizer(stop_words='english', ngram_range=(1, 2), max_features=800000)
 data = tfidf.fit_transform(df)
 
-model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
-# model = ensemble.RandomForestClassifier(n_estimators=100, random_state=42)
+# model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
+model = ensemble.RandomForestClassifier(n_estimators=200, random_state=42)
 # model = xgb.XGBClassifier(max_depth=3, n_estimators=100, learning_rate=0.05)
 
 model.fit(data[:nrow], y)
