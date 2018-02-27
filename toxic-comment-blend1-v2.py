@@ -40,7 +40,11 @@ ble[label_cols] = (4*gru_v1[label_cols] + 3*gru_v2[label_cols] + 3*gru_v3[label_
 
 # submission_ave.csv is downloaded from
 # https://www.kaggle.com/the1owl/toxic-simple-blending-toxic-avenger-spin/notebook
-ave = pd.read_csv('submission_ave.csv')
+
+# ave = pd.read_csv('superblend_1.csv')
+# ave = pd.read_csv('submission_ave.csv')
+ave = pd.read_csv('submission-lgb-gru-lr-lstm-nb-svm-ave-ensemble.csv')
+
 sub1 = ble[:]
 sub2 = ave[:]
 coly = [c for c in ave.columns if c not in ['id', 'comment_text']]

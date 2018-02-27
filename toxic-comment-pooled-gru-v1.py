@@ -39,8 +39,13 @@ embed_size = 300
 
 tokenizer = text.Tokenizer(num_words=max_features)
 tokenizer.fit_on_texts(list(X_train) + list(X_test))
+
 X_train = tokenizer.texts_to_sequences(X_train)
 X_test = tokenizer.texts_to_sequences(X_test)
+
+print((np.array(X_train)).shape)
+print(X_train[0])
+
 x_train = sequence.pad_sequences(X_train, maxlen=maxlen)
 x_test = sequence.pad_sequences(X_test, maxlen=maxlen)
 
