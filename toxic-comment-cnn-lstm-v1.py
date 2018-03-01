@@ -143,7 +143,7 @@ labels= train[classes]
 data_train, data_test, y_train, y_test, comm_train, comm_trst = train_test_split(data, np.array(labels),train.comment_text, test_size=0.20, random_state=42)
 
 model = get_model()
-model.fit(data_train, y_train, 1024, epochs=3, validation_data=(data_test, y_test))
+model.fit(data_train, y_train, 32, epochs=2, validation_data=(data_test, y_test))
 
 # submission script
 preds = model.predict(t_data)
