@@ -7,6 +7,7 @@ import numpy as np
 gru_v1 = pd.read_csv("submission-pooled-gru-v1.csv")
 gru_v2 = pd.read_csv("submission-pooled-gru-v2.csv")
 gru_v3 = pd.read_csv("submission-pooled-gru-v3.csv")
+gru_v4 = pd.read_csv("submission-pooled-gru-v4.csv")
 
 cnn_lstm_v1 = pd.read_csv("submission_cnn_lstm_v1.csv")
 cnn_gru_v1 = pd.read_csv("submission_cnn_gru_v1.csv")
@@ -16,9 +17,6 @@ mlp_v1 = pd.read_csv("submission-mlp-v1.csv")
 
 # s9821 = pd.read_csv("sub9821.csv")
 # hight = pd.read_csv('hight_of_blending.csv')
-
-cnn_lstm_v1 = pd.read_csv('submission_cnn_lstm_v1.csv')
-
 
 
 # gru = pd.read_csv("../input/who09829/submission.csv")
@@ -39,9 +37,9 @@ cnn_lstm_v1 = pd.read_csv('submission_cnn_lstm_v1.csv')
 label_cols = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 ble = gru_v1.copy()
 #p_res[label_cols] = (2*p_nbsvm[label_cols] + 3*p_lstm[label_cols] + 4*p_eaf[label_cols]) / 9
-ble[label_cols] = (4*gru_v1[label_cols] + 3*gru_v2[label_cols] + 3*gru_v3[label_cols]
+ble[label_cols] = (4*gru_v1[label_cols] + 3*gru_v2[label_cols] + 3*gru_v3[label_cols] + 2*gru_v3[label_cols]
                    + 4*cnn_lstm_v1[label_cols] + 4*cnn_gru_v1[label_cols]
-                   + 1*lr_v1[label_cols] + 2*mlp_v1[label_cols] + 2*cnn_lstm_v1[label_cols]) / 23
+                   + 1*lr_v1[label_cols] + 2*mlp_v1[label_cols]) / 23
 # ble.to_csv('submission-blend1-v1', index=False)
 
 
