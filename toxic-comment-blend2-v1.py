@@ -35,7 +35,7 @@ tfidf = feature_extraction.text.TfidfVectorizer(stop_words='english', ngram_rang
 data = tfidf.fit_transform(df)
 
 # model = ensemble.ExtraTreesClassifier(n_jobs=-1, random_state=42)
-model = ensemble.RandomForestClassifier(n_estimators=200, random_state=42)
+model = ensemble.RandomForestClassifier(n_estimators=300, random_state=42)
 # model = xgb.XGBClassifier(max_depth=3, n_estimators=100, learning_rate=0.05)
 
 model.fit(data[:nrow], y)
@@ -67,6 +67,6 @@ for c in coly:
 
 blend = blend[sub1.columns]
 
-blend.to_csv('submission-blend2-gbm-v1.csv', index=False)
+blend.to_csv('submission-blend2-v1.csv', index=False)
 
-print('save submission to submission-blend2-gbm-v1.csv')
+print('save submission to submission-blend2-v1.csv')

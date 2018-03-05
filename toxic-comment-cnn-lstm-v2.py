@@ -143,15 +143,20 @@ for i in lte:
             j = repl[j]
         xx += j + " "
     new_test_data.append(xx)
+
 train["new_comment_text"] = new_train_data
 test["new_comment_text"] = new_test_data
+
 print("crap removed")
+
 trate = train["new_comment_text"].tolist()
 tete = test["new_comment_text"].tolist()
+
 for i, c in enumerate(trate):
     trate[i] = re.sub('[^a-zA-Z ?!]+', '', str(trate[i]).lower())
 for i, c in enumerate(tete):
     tete[i] = re.sub('[^a-zA-Z ?!]+', '', tete[i])
+
 train["comment_text"] = trate
 test["comment_text"] = tete
 print('only alphabets')
